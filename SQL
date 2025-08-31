@@ -1,0 +1,29 @@
+SELECT COUNT(DISTINCT TRANSACTION_ID) AS number_of_sales,
+       COUNT(DISTINCT CUSTOMER_ID) AS number_of_customers,
+       DATE AS purchase_date,
+       DAYNAME(DATE) AS day_name,
+       MONTHNAME(DATE)AS month_name,
+       DAYOFMONTH(DATE) AS day_of_month,
+       
+       CASE
+            WHEN AGE BETWEEN 0 AND 12 THEN 'Child'
+            WHEN AGE BETWEEN 13 AND 18 THEN 'Youth'
+            WHEN AGE BETWEEN 19 AND 30 THEN 'Young Adult'
+            WHEN AGE BETWEEN 31 AND 40 THEN 'Adult'
+            ELSE 'Senior'
+       END AS age_buckets,
+       
+       CASE
+            WHEN TOTAL_AMOUNT BETWEEN 0 AND 100 THEN 'Low Spend'
+            WHEN TOTAL_AMOUNT > 100 AND TOTAL_AMOUNT <=200 THEN 'Medium Spend'
+            WHEN TOTAL_AMOUNT > 200 THEN 'High Spend'
+       END AS spend_buckets,
+       
+       SUM(QUANTITY) AS Units_sold,
+       SUM(TOTAL_AMOUNT) AS Total_revenue,
+
+       PRODUCT_CATEGORY,
+       GENDER,
+FROM
+  "RETAIL_SALES_DATA"."PUBLIC"."SALES"
+GROUP BY ALL;
